@@ -1,27 +1,13 @@
 const Sample = require("./sample.js");
 const PuppeteerBrowser =  require("./PuppeteerBrowser.js");
 const readline = require("readline");
-
-const fs = require("fs");
-const { TemplateHandler } = require("easy-template-x");
+const { createReport } = require("./utils");
 
 (async () => {
     // const browserInstance = await PuppeteerBrowser.build();
     // browserInstance.screenshot();
 
-    const templateFile = fs.readFileSync(__dirname + '/sample.docx');
-
-    const data = {
-        sample: [
-            { testVal: 'Alon Bar'},
-            { testVal: 'Bitch Bar' }
-        ]
-    };
-
-    const handler = new TemplateHandler();
-    const doc = await handler.process(templateFile, data);
-
-    fs.writeFileSync('myTemplate - output.docx', doc);
+    createReport();
 
     const read = readline.createInterface({
         input: process.stdin,

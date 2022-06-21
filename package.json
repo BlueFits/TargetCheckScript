@@ -1,4 +1,6 @@
 {
+    "name": "target-check-script",
+    "version": "0.1.0",
     "scripts": {
         "start": "node ./src/script.js"
     },
@@ -6,5 +8,12 @@
         "chrome-paths": "^1.0.1",
         "easy-template-x": "^2.1.0",
         "puppeteer": "^14.4.1"
-    }
+    },
+    "bin":"./src/script.js",
+    "pkg": {
+        "scripts": [],
+        "assets": [
+          "src/templates/sample.docx"
+        ]
+      }
 }
