@@ -1,11 +1,10 @@
-const Sample = require("./sample.js");
 const PuppeteerBrowser =  require("./PuppeteerBrowser.js");
 const readline = require("readline");
 const { createReport } = require("./utils");
 
 (async () => {
-    // const browserInstance = await PuppeteerBrowser.build();
-    // browserInstance.screenshot();
+    const browserInstance = await PuppeteerBrowser.build();
+    browserInstance.screenshot();
 
     createReport();
 
