@@ -1,0 +1,10 @@
+{
+    "scripts": {
+        "start": "node ./src/script.js"
+    },
+    "type": "module",
+    "dependencies": {
+        "chrome-paths": "^1.0.1",
+        "puppeteer": "^14.4.1"
+    }
+}
