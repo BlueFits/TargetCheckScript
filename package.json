@@ -4,6 +4,7 @@
     },
     "dependencies": {
         "chrome-paths": "^1.0.1",
+        "easy-template-x": "^2.1.0",
         "puppeteer": "^14.4.1"
     }
 }
