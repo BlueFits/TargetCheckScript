@@ -1,1 +1,1 @@
-export default ["asdasd", "asdasd"];
+module.exports = ["asdasd", "asdasd"];

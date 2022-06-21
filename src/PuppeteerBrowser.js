@@ -1,7 +1,7 @@
-import * as pupeteer from 'puppeteer';
-import chromePaths from "chrome-paths";
+const pupeteer = require('puppeteer');
+const chromePaths = require("chrome-paths");
 
-export default class PuppeteerBrowser {
+module.exports = class PuppeteerBrowser {
     constructor (browser, page) {
         this.page = page;
         this.browser = browser;
@@ -25,7 +25,7 @@ export default class PuppeteerBrowser {
     }
 
     async screenshot() {
-        await this.page.screenshot({path: 'buddy-screenshot.png', fullPage: true});
+        await this.page.screenshot({path: './test-screenshot.png', fullPage: true});
         this.browser.close();
     };
 };
