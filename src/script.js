@@ -2,9 +2,10 @@ const PuppeteerBrowser = require("./Puppeteer/PuppeteerBrowser");
 const readline = require("readline");
 
 (async () => {
+    console.log("Scripts loding...");
 
     const browserInstance = await PuppeteerBrowser.build();
-    browserInstance.generateReport([
+    await browserInstance.generateReport([
         "https://www.bmo.com/main/personal",
         "https://www.bmo.com/main/personal/mortgages/mortgage-rates/",
     ]);
