@@ -13,7 +13,8 @@
     "pkg": {
         "scripts": [],
         "assets": [
-          "src/templates/sample.docx"
+          "src/templates/template.docx",
+          "report/0-screenshot.png"
         ]
       }
 }
