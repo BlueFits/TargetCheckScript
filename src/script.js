@@ -1,12 +1,13 @@
-const PuppeteerBrowser =  require("./PuppeteerBrowser.js");
+const PuppeteerBrowser = require("./Puppeteer/PuppeteerBrowser");
 const readline = require("readline");
-const { createReport } = require("./utils");
 
 (async () => {
-    const browserInstance = await PuppeteerBrowser.build();
-    browserInstance.screenshot();
 
-    createReport();
+    const browserInstance = await PuppeteerBrowser.build();
+    browserInstance.generateReport([
+        "https://www.bmo.com/main/personal",
+        "https://www.bmo.com/main/personal/mortgages/mortgage-rates/",
+    ]);
 
     const read = readline.createInterface({
         input: process.stdin,
