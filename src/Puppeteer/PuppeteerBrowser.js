@@ -3,7 +3,8 @@ const chromePaths = require("chrome-paths");
 const { asyncBrowserScript } = require("./helper");
 const fs = require("fs");
 const path = require("path");
-const { TemplateHandler } = require("easy-template-x");
+const { Document, Packer, Paragraph, ImageRun } = require("docx");
+const CustomTable = require("../components/CustomTable");
 
 module.exports = class PuppeteerBrowser {
     constructor (browser) {
@@ -22,12 +23,11 @@ module.exports = class PuppeteerBrowser {
     }
 
     async generateReport(links) {
-        if (!fs.existsSync("./report")){
-            fs.mkdirSync("./report");
-        }
-
+        //Make a report folder if it doesnt exist already
+        if (!fs.existsSync("./report")) fs.mkdirSync("./report");
         let infoErr = [];
-
+        let format = [];
+        //Scrape through browser and take screenshots and get info
         for (let i = 0; i < links.length; i++) {
             const pages = await this.browser.pages();
             const page = pages[0];
@@ -38,31 +38,36 @@ module.exports = class PuppeteerBrowser {
             const siteDetails = await page.evaluate(asyncBrowserScript);
             await page.screenshot({path: `./report/${imageName}`, fullPage: true});
             infoErr.push({ siteDetails,  imageName });
+        }        
+        //Generate doc report markdown
+        for (let i = 0; i < infoErr.length; i++) {
+            const { title, url, errVals } = infoErr[i].siteDetails;
+            const imageInline = new Paragraph({
+                children: [
+                        new ImageRun({
+                        data: fs.readFileSync(path.join(__dirname, '..', '..', 'report', infoErr[i].imageName)),
+                        transformation: {
+                            width: 500,
+                            height: 900,
+                        },
+                    })
+                ],
+            });
+            let section = {
+                properties: {},
+                children: [
+                    CustomTable({ title, url, errVals }),
+                    imageInline,
+                ],
+            };
+            format.push(section);
         }
-
-        const templateFile = fs.readFileSync(path.join(__dirname, '..', 'templates', 'template.docx'));
-
-        const data = {
-            report: infoErr.map((val) => {
-                const { title, url, errVals } = val.siteDetails;
-                return {
-                    title,
-                    url,
-                    value: errVals.join(", \n"),
-                };
-            }),
-            "image_screenshot": {
-                _type: "image",
-                source: fs.readFileSync(path.join(__dirname, '..', '..', 'report', infoErr[0].imageName)),
-                format: "image/png",
-                width: 400,
-                height: 700,
-            }
-        };
-    
-        const handler = new TemplateHandler();
-        const doc = await handler.process(templateFile, data);
-        fs.writeFileSync('./report/myTemplate - output.docx', doc);
+        //Compile report
+        const doc = new Document({ sections: format });
+        // Used to export the file into a .docx file
+        const buffer = await Packer.toBuffer(doc);
+        fs.writeFileSync("./report/report.docx", buffer);
+        //Close pupeteer instance
         this.browser.close();
     };
 };
