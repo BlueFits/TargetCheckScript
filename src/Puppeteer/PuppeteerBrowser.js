@@ -26,7 +26,7 @@ module.exports = class PuppeteerBrowser {
         //Make a report folder if it doesnt exist already
         if (!fs.existsSync("./report")) fs.mkdirSync("./report");
         let infoErr = [];
-        let format = [];
+        let sections = [];
         //Scrape through browser and take screenshots and get info
         for (let i = 0; i < links.length; i++) {
             const pages = await this.browser.pages();
@@ -60,10 +60,10 @@ module.exports = class PuppeteerBrowser {
                     imageInline,
                 ],
             };
-            format.push(section);
+            sections.push(section);
         }
         //Compile report
-        const doc = new Document({ sections: format });
+        const doc = new Document({ sections });
         // Used to export the file into a .docx file
         const buffer = await Packer.toBuffer(doc);
         fs.writeFileSync("./report/report.docx", buffer);

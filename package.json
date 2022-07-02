@@ -13,6 +13,7 @@
     "pkg": {
         "scripts": [],
         "assets": [
+            "report/*.jpeg"
         ]
     }
 }
