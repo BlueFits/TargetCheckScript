@@ -1,31 +1,36 @@
 const PuppeteerBrowser = require("./Puppeteer/PuppeteerBrowser");
 const readline = require("readline");
 const fs = require("fs");
-const path = require("path");
+const { parseReport } = require("./utils");
 
 
 (async () => {
-    console.log("Scripts loding...");
-
-    //New code
-    const links = 
-        fs.readFileSync(path.join(__dirname, '..', 'links.txt'), { encoding:'utf8', flag:'r' })
-        .split(",");
-
-    const browserInstance = await PuppeteerBrowser.build();
-    await browserInstance.generateReport(links);
-    
-    // const read = readline.createInterface({
-    //     input: process.stdin,
-    //     output: process.stdout,
-    // });
-
-    // read.question(`Press Enter to close... `, (input) => {
-    //     // if (input === "y") {
-    //     //     console.log("yes");
-    //     // } else if (input === "n") {
-    //     //     console.log("no");
-    //     // }
-    //     read.close();
-    // });
+    const reportFolderExist = fs.existsSync("./report");
+    const scriptLogic = async () => {
+        console.log("Scripts loding...");
+        const links = parseReport();
+        const browserInstance = await PuppeteerBrowser.build();
+        await browserInstance.generateReport(links);
+    }
+    //Message if report folder already exist
+    if (reportFolderExist) {
+        const read = readline.createInterface({
+            input: process.stdin,
+            output: process.stdout,
+        });
+        read.question(`report folder exists, please make sure to delete all files in folder before proceeding, continue? (y/n)`, 
+        (input) => {
+            switch (input) {
+                case "y":
+                    scriptLogic();
+                    break;
+                case "n":
+                    console.log("Exiting script...");
+                    break;
+                default:
+                    console.log("Invalid input, exiting script...");
+            }
+            read.close();
+        });
+    } else { scriptLogic(); }
 })();
