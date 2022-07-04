@@ -7,10 +7,16 @@ const { parseReport } = require("./utils");
 (async () => {
     const reportFolderExist = fs.existsSync("./report");
     const scriptLogic = async () => {
+        if (!fs.existsSync("links.txt")) {
+            console.log("No links.txt file detected");
+            console.log("Exiting script...");
+            return;
+        } 
         console.log("Scripts loding...");
         const links = parseReport();
         const browserInstance = await PuppeteerBrowser.build();
         await browserInstance.generateReport(links);
+        console.log("Finished")
     }
     //Message if report folder already exist
     if (reportFolderExist) {
