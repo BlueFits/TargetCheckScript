@@ -2,9 +2,12 @@ const PuppeteerBrowser = require("./Puppeteer/PuppeteerBrowser");
 const readline = require("readline");
 const fs = require("fs");
 const { parseReport } = require("./utils");
-
+const process = require('process');
+const path = require("path");
 
 (async () => {
+    console.log("Working dir:", path.join(__dirname, '..'));
+    try { process.chdir(path.join(__dirname, '..')) } catch (err) { console.log('chdir: ' + err); }
     const reportFolderExist = fs.existsSync("./report");
     const scriptLogic = async () => {
         if (!fs.existsSync("links.txt")) {

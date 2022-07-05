@@ -5,6 +5,7 @@ const fs = require("fs");
 const path = require("path");
 const { Document, Packer, Paragraph, ImageRun } = require("docx");
 const CustomTable = require("../components/CustomTable");
+const LegendTable = require("../components/LegendTable");
 
 module.exports = class PuppeteerBrowser {
     constructor (browser) {
@@ -26,7 +27,12 @@ module.exports = class PuppeteerBrowser {
         //Make a report folder if it doesnt exist already
         if (!fs.existsSync("./report")) fs.mkdirSync("./report");
         let infoErr = [];
-        let sections = [];
+        let sections = [{
+            properties: {},
+            children: [
+                LegendTable(),
+            ],
+        }];
         //Scrape through browser and take screenshots and get info
         for (let i = 0; i < links.length; i++) {
             const pages = await this.browser.pages();

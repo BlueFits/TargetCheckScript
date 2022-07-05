@@ -1,6 +1,6 @@
-const {  Paragraph, TextRun, TableCell, WidthType, convertInchesToTwip } = require("docx");
+const {  Paragraph, TextRun, TableCell, WidthType, convertInchesToTwip, BorderStyle } = require("docx");
 
-const CustomTableCell = ({ text, bold, size } = {}) => {
+const CustomTableCell = ({ text, bold, size, borderColor } = {}) => {
 
     let childrenVal = [new Paragraph({
         children: [new TextRun({
@@ -27,9 +27,33 @@ const CustomTableCell = ({ text, bold, size } = {}) => {
         );
     }
 
+    let borders = borderColor ? {
+        top: {
+            style: BorderStyle.DOUBLE,
+            size: 3,
+            color: borderColor,
+        },
+        bottom: {
+            style: BorderStyle.DOUBLE,
+            size: 3,
+            color: borderColor,
+        },
+        left: {
+            style: BorderStyle.DOUBLE,
+            size: 3,
+            color: borderColor,
+        },
+        right: {
+            style: BorderStyle.DOUBLE,
+            size: 3,
+            color: borderColor,
+        }
+    } : {};
+
 
     return new TableCell({
         children: childrenVal,
+        borders,
         width: {
             size: size || 2000,
             type: WidthType.DXA,

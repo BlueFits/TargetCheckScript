@@ -13,8 +13,11 @@
     "pkg": {
         "scripts": [],
         "assets": [
-            "report/*.jpeg",
+            "report/*.*",
             "links.txt"
+        ],
+        "targets": [
+            "node12-macos-x64"
         ]
     }
 }

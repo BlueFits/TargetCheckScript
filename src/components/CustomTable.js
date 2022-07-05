@@ -1,4 +1,4 @@
-const { Document, Packer, Table, TableRow, Paragraph, ImageRun } = require("docx");
+const { Table, TableRow } = require("docx");
 const CustomTableCell = require("./CustomTableCell");
 
 const CustomTable = ({ title, url, errVals }) => {
