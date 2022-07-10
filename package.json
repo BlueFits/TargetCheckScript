@@ -13,7 +13,7 @@
     "pkg": {
         "scripts": [],
         "assets": [
-            "report/*.*",
+            "report/*",
             "links.txt"
         ],
         "targets": [

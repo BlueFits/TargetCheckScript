@@ -6,8 +6,9 @@ const process = require('process');
 const path = require("path");
 
 (async () => {
-    console.log("Working dir:", path.join(__dirname, '..'));
-    try { process.chdir(path.join(__dirname, '..')) } catch (err) { console.log('chdir: ' + err); }
+    const pathRAW = (process.pkg) ? path.dirname(process.execPath) : path.join(__dirname, "..");
+    console.log("Working dir:", pathRAW);
+    try { process.chdir(pathRAW) } catch (err) { console.log('chdir: ' + err); }
     const reportFolderExist = fs.existsSync("./report");
     const scriptLogic = async () => {
         if (!fs.existsSync("links.txt")) {
