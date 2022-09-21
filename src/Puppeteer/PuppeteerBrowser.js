@@ -15,7 +15,7 @@ module.exports = class PuppeteerBrowser {
     static async build() {
         let browser = await pupeteer.launch({
             executablePath: chromePaths.chrome,
-			headless: false,
+			headless: true,
 			devtools: false,
 			defaultViewport: null,
             "args": ["--fast-start", "--disable-extensions", "--no-sandbox"],
@@ -43,7 +43,7 @@ module.exports = class PuppeteerBrowser {
 
             const siteDetails = await page.evaluate(asyncBrowserScript);
             const screenshot = await page.screenshot({ fullPage: true });
-            infoErr.push({ siteDetails, imageName,  screenshot});
+            infoErr.push({ siteDetails, imageName, screenshot});
         }        
         //Generate doc report markdown
         for (let i = 0; i < infoErr.length; i++) {
