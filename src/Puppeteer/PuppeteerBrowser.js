@@ -15,7 +15,7 @@ module.exports = class PuppeteerBrowser {
     static async build() {
         let browser = await pupeteer.launch({
             executablePath: chromePaths.chrome,
-			headless: true,
+			headless: false,
 			devtools: false,
 			defaultViewport: null,
             "args": ["--fast-start", "--disable-extensions", "--no-sandbox"],
@@ -42,8 +42,8 @@ module.exports = class PuppeteerBrowser {
             let imageName = `${i}-screenshot.png`;
 
             const siteDetails = await page.evaluate(asyncBrowserScript);
-            await page.screenshot({path: `./report/${imageName}`, fullPage: true});
-            infoErr.push({ siteDetails,  imageName });
+            const screenshot = await page.screenshot({ fullPage: true });
+            infoErr.push({ siteDetails, imageName,  screenshot});
         }        
         //Generate doc report markdown
         for (let i = 0; i < infoErr.length; i++) {
@@ -51,7 +51,7 @@ module.exports = class PuppeteerBrowser {
             const imageInline = new Paragraph({
                 children: [
                         new ImageRun({
-                        data: fs.readFileSync(path.join(__dirname, '..', '..', 'report', infoErr[i].imageName)),
+                        data: infoErr[i].screenshot,
                         transformation: {
                             width: 500,
                             height: 900,
